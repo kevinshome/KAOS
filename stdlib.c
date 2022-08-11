@@ -126,6 +126,10 @@
 /*
 this file contains independent cstdlib functions, taken (and partially modified) from the Apple XNU Kernel
 */
+
+#include "kernel.h"
+
+// convert integer to char *
 char *
 itoa(
 	int     num)
@@ -152,6 +156,11 @@ itoa(
 	return str;
 }
 
+/*
+compare 2 char *
+0 -> ==
+non-zero -> !=
+*/
 int
 strcmp(
 	const char *s1,
@@ -170,4 +179,64 @@ strcmp(
 	} while (a != '\0');
 
 	return 0;       /* both are zero */
+}
+
+// concatenate two char *
+char *
+strcat(
+	char *dest,
+	const char *src)
+{
+	char *old = dest;
+
+	while (*dest) {
+		++dest;
+	}
+	while ((*dest++ = *src++)) {
+		;
+	}
+	return old;
+}
+
+int
+strlen(const char *str)
+{
+	const char *p;
+	for (p = str; p; p++) {
+		if (*p == '\0') {
+			return (int)(p - str);
+		}
+	}
+	/* NOTREACHED */
+	return 0;
+}
+
+size_t
+strlcat(char *dst, const char *src, size_t siz)
+{
+	char *d = dst;
+	const char *s = src;
+	size_t n = siz;
+	size_t dlen;
+
+	/* Find the end of dst and adjust bytes left but don't go past end */
+	while (n-- != 0 && *d != '\0') {
+		d++;
+	}
+	dlen = d - dst;
+	n = siz - dlen;
+
+	if (n == 0) {
+		return dlen + strlen(s);
+	}
+	while (*s != '\0') {
+		if (n != 1) {
+			*d++ = *s;
+			n--;
+		}
+		s++;
+	}
+	*d = '\0';
+
+	return dlen + (s - src);       /* count does not include NUL */
 }

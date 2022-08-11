@@ -10,7 +10,7 @@ all:
 	$(LD) boot.o video.o stdlib.o kmain.o -o kern
 
 boot:
-	qemu-system-x86_64 -kernel kern -append "color_test"
+	qemu-system-x86_64 -kernel kern -append "mbinfo color_test"
 
 clean:
 	rm *.o
