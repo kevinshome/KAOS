@@ -22,8 +22,21 @@ global write_port
 global read_port
 global call_reset_vector
 global disable_cursor
+global load_idt
+global keyboard_handler
 extern kmain
 extern color_test
+extern keyboard_handler_main
+
+load_idt:
+	mov edx, [esp + 4]
+	lidt [edx]
+	sti 				;turn on interrupts
+	ret
+
+keyboard_handler:
+	call    keyboard_handler_main
+	iretd
 
 read_port:
 	mov edx, [esp + 4]

@@ -7,10 +7,12 @@ all:
 	$(CC) -c kmain.c -o kmain.o
 	$(CC) -c stdlib.c -o stdlib.o
 	$(CC) -c video.c -o video.o
-	$(LD) boot.o video.o stdlib.o kmain.o -o kern
+	$(CC) -c keyboard.c -o keyboard.o
+	$(CC) -c cmdline.c -o cmdline.o
+	$(LD) boot.o video.o stdlib.o kmain.o cmdline.o -o kern
 
 boot:
-	qemu-system-x86_64 -kernel kern -append "mbinfo color_test"
+	qemu-system-x86_64 -kernel kern -append "nosplash"
 
 clean:
 	rm *.o

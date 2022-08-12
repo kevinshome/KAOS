@@ -1,6 +1,10 @@
 #include "kernel.h"
 #include "multiboot.h"
 
+#include "keyboard.c"
+
+void keyboard_handler_main(void);
+
 struct k_cfg
 {
     int run_colortest;
@@ -9,6 +13,7 @@ struct k_cfg
 };
 
 struct k_cfg kernel_config;
+const multiboot_info_t* mb_info;
 
 void init_config(){
     kernel_config.run_colortest=0;
@@ -57,7 +62,7 @@ void parse_cmdline(char* cmdline){
     run_cmd((char*)current_str);
 }
 
-int print_multiboot_info(const multiboot_info_t* mb_info){
+int print_multiboot_info(void){
     const struct multiboot_apm_info* mb_apm = (void*) mb_info->apm_table;
     const struct multiboot_mmap_entry* mb_mmap = (void*) mb_info->mmap_addr;
     if (mb_info==NULL)
@@ -65,7 +70,8 @@ int print_multiboot_info(const multiboot_info_t* mb_info){
     int *magenta = ((int*)0x0d);
     int *cyan = ((int*)0x0b);
 
-    while (1){
+        clear_screen(2);
+        draw_smile();
         // multiboot_info_t
         kprint("Variables from multiboot_info_t struct:\n------------", 4, magenta, NULL);
         kprint("boot_loader_name:", 6, cyan, NULL);
@@ -122,7 +128,13 @@ int print_multiboot_info(const multiboot_info_t* mb_info){
         clear_screen(4);
         draw_smile();
 
-    }
+}
+
+void initialize_cmdprompt(void){
+    clear_screen(0);
+    kprint("running kevkernel 0.0.0 pre-alpha", 0, NULL, NULL);
+    kprint("unexpected behaviors may occur", 1, NULL, NULL);
+    draw_smile();
 }
 
 void kmain(const void* multiboot_struct){
@@ -130,7 +142,7 @@ void kmain(const void* multiboot_struct){
     init_config();
     disable_cursor();
     clear_screen(0);
-    const multiboot_info_t* mb_info = multiboot_struct;            /* Make pointer to multiboot_info_t struct */
+    mb_info = multiboot_struct;            /* Make pointer to multiboot_info_t struct */
     char* mb_cmdline = (char*)mb_info->cmdline;
     parse_cmdline(mb_cmdline);
 
@@ -151,8 +163,14 @@ void kmain(const void* multiboot_struct){
     }
     clear_screen(2);
     draw_smile();
-    if (kernel_config.show_mb_info == 1)
-        print_multiboot_info(mb_info);
-    kprint("end_of_execution:0x00000000", 23, NULL, ((int*)100));
+    if (kernel_config.show_mb_info == 1){
+        do{
+            print_multiboot_info();
+        }while(1);
+    }
+    idt_init();
+    kb_init();
+    kprint("> ", 4, NULL, NULL);
+    //kprint("end_of_execution:0x00000000", 23, NULL, ((int*)100));
     while(1);
 }

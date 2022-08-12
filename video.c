@@ -1,6 +1,5 @@
 #include "kernel.h"
 
-char *vidptr = (char*)0xb8000;
 int colors[] = {0x0f, 0x1f, 0x2f, 0x3f, 0x4f, 0x5f, 0x6f, 0x70, 0x8f, 0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xf0};
 char *color_names[] = {
     "\t\t\t\t\t\t\t\t\tblack", 
@@ -24,8 +23,8 @@ char *color_names[] = {
 void clear_screen(unsigned int after_line){
     unsigned int cursor_pos = (after_line*80*2);
     for (unsigned int i=cursor_pos; i< MAX_LEN; i+=2){
-        vidptr[i] = 0x00;
-        vidptr[i+1] = 0x00;
+        VIDPTR[i] = 0x00;
+        VIDPTR[i+1] = 0x00;
     }
 }
 
@@ -49,11 +48,11 @@ unsigned int kprint(char *message, int line, int *color, int *right_offset) //pr
                         *message++;
                     }else {
                         cursor_pos = cursor_pos + (int)right_offset;
-						vidptr[cursor_pos]=*message;
+						VIDPTR[cursor_pos]=*message;
                         right_offset = (int*)0;
 						*message++;
 						cursor_pos++;
-						vidptr[cursor_pos]=(int)color;
+						VIDPTR[cursor_pos]=(int)color;
 						cursor_pos++;
 					};
 				};
@@ -69,8 +68,8 @@ void color_test(){
         for (unsigned int i=0; i<MAX_LEN; i+=2){
             kprint("\t\t\t\t\t\t\t\t\tKevKernel VGA color_test", 12, NULL, NULL);
             kprint(color_names[cpos], 13, NULL, NULL);
-            vidptr[i] = 0x00;
-            vidptr[i+1] = colors[cpos];
+            VIDPTR[i] = 0x00;
+            VIDPTR[i+1] = colors[cpos];
         }
         wait(5e7);
         cpos += 1;
@@ -83,40 +82,40 @@ void draw_smile(){
     */
     int cpos = 0;
     for (unsigned int i = 2500; i < 2530; i+=2){
-        vidptr[i] = 0x00;
-        vidptr[i+1] = colors[cpos];
-        //vidptr[i+2] = 0x00;
-        //vidptr[i+3] = colors[cpos];
+        VIDPTR[i] = 0x00;
+        VIDPTR[i+1] = colors[cpos];
+        //VIDPTR[i+2] = 0x00;
+        //VIDPTR[i+3] = colors[cpos];
         cpos +=1;
         if (cpos > 15){
             cpos = 0;
         }
     }
     for (unsigned int i = 2818; i < 2850; i+=2){
-        vidptr[i] = 0x00;
-        vidptr[i+1] = colors[cpos];
-        //vidptr[i+2] = 0x00;
-        //vidptr[i+3] = colors[cpos];
+        VIDPTR[i] = 0x00;
+        VIDPTR[i+1] = colors[cpos];
+        //VIDPTR[i+2] = 0x00;
+        //VIDPTR[i+3] = colors[cpos];
         cpos +=1;
         if (cpos > 15){
             cpos = 0;
         }
     }
     for (unsigned int i = 3138; i < 3170; i+=2){
-        vidptr[i] = 0x00;
-        vidptr[i+1] = colors[cpos];
-        //vidptr[i+2] = 0x00;
-        //vidptr[i+3] = colors[cpos];
+        VIDPTR[i] = 0x00;
+        VIDPTR[i+1] = colors[cpos];
+        //VIDPTR[i+2] = 0x00;
+        //VIDPTR[i+3] = colors[cpos];
         cpos +=1;
         if (cpos > 15){
             cpos = 0;
         }
     }
     for (unsigned int i = 3458; i < 3490; i+=2){
-        vidptr[i] = 0x00;
-        vidptr[i+1] = colors[cpos];
-        //vidptr[i+2] = 0x00;
-        //vidptr[i+3] = colors[cpos];
+        VIDPTR[i] = 0x00;
+        VIDPTR[i+1] = colors[cpos];
+        //VIDPTR[i+2] = 0x00;
+        //VIDPTR[i+3] = colors[cpos];
         cpos +=1;
         if (cpos > 15){
             cpos = 0;
