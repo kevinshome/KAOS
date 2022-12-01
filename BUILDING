@@ -1,0 +1,7 @@
+Building KAOS on MacOS requires the following packages (from Homebrew):
+	- llvm
+	- x86_64-elf-gcc
+	- qemu
+Building KAOS on Linux requires the following package (from your distro's package manager):
+	- gcc
+	- qemu-system-x86_64
