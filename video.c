@@ -66,7 +66,7 @@ void color_test(){
     int cpos = 0;
     while(cpos < 14){
         for (unsigned int i=0; i<MAX_LEN; i+=2){
-            kprint("\t\t\t\t\t\t\t\t\tKevKernel VGA color_test", 12, NULL, NULL);
+            kprint("\t\t\t\t\t\t\t\t\tKAOS VGA color_test", 12, NULL, NULL);
             kprint(color_names[cpos], 13, NULL, NULL);
             VIDPTR[i] = 0x00;
             VIDPTR[i+1] = colors[cpos];

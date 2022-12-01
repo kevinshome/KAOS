@@ -132,7 +132,7 @@ int print_multiboot_info(void){
 
 void initialize_cmdprompt(void){
     clear_screen(0);
-    kprint("running kevkernel 0.0.0 pre-alpha", 0, NULL, NULL);
+    kprint("running KAOS 0.0.0 pre-alpha", 0, NULL, NULL);
     kprint("unexpected behaviors may occur", 1, NULL, NULL);
     draw_smile();
 }
@@ -152,13 +152,13 @@ void kmain(const void* multiboot_struct){
         clear_screen(0);
 
     // print welcome message
-    kprint("running kevkernel 0.0.0 pre-alpha", 0, NULL, NULL);
+    kprint("running KAOS 0.0.0 pre-alpha", 0, NULL, NULL);
     kprint("unexpected behaviors may occur", 1, NULL, NULL);
     if (kernel_config.suppress_splash_screen == 0){
-        kprint("Welcome to KevKernel :)", 12, NULL, ((int*)36));
+        kprint("Welcome to KAOS :)", 12, NULL, ((int*)36));
         wait(2e8);
         clear_screen(2);
-        kprint("A custom kernel by kevinshome.", 12, NULL, ((int*)36));
+        kprint("A custom OS/kernel by kevinshome.", 12, NULL, ((int*)36));
         wait(2e8);
     }
     clear_screen(2);
